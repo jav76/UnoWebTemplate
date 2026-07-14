@@ -31,7 +31,9 @@ public partial class App : Application
             rootFrame.Navigate(typeof(MainPage), args.Arguments);
         }
 
+#if !__WASM__
         MainWindow.SetWindowIcon();
+#endif
         MainWindow.Activate();
     }
 
