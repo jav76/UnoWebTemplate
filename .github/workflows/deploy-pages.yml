@@ -1,0 +1,60 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Install WASM Workload
+        run: dotnet workload install wasm-tools
+
+      - name: Restore dependencies
+        run: dotnet restore UnoWebTemplate.Client/UnoWebTemplate.Client/UnoWebTemplate.Client.csproj
+
+      - name: Publish WASM Client
+        run: |
+          dotnet publish UnoWebTemplate.Client/UnoWebTemplate.Client/UnoWebTemplate.Client.csproj \
+            -c Release \
+            -f net10.0-browserwasm \
+            -o build-output
+
+      # Fix base href for GitHub Pages subpath hosting (e.g. /UnoWebTemplate/)
+      - name: Fix base href for GitHub Pages subpath
+        run: |
+          REPOSITORY_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
+          sed -i "s|<base href=\"/\" />|<base href=\"/$REPOSITORY_NAME/\" />|g" build-output/wwwroot/index.html
+
+      # Inject the hosted API URL into index.html before deployment
+      - name: Inject API URL
+        env:
+          API_URL: ${{ secrets.API_URL }}
+        run: |
+          if [ -n "$API_URL" ]; then
+            sed -i "s|</head>|<script>window.UnoAppConfig = { apiUrl: '$API_URL' };</script></head>|g" build-output/wwwroot/index.html
+            echo "✅ Injected API URL: $API_URL"
+          else
+            echo "ℹ️ No API_URL specified, using relative path fallback."
+          fi
+
+      # Deploys the compiled wwwroot folder to the 'gh-pages' branch
+      - name: Deploy to GitHub Pages 🚀
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build-output/wwwroot
