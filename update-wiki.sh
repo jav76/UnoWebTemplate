@@ -16,14 +16,16 @@ cp -v "$DOCS_DIR"/*.md "$WIKI_DIR"/
 echo "💾 Committing and pushing changes to GitHub Wiki..."
 cd "$WIKI_DIR"
 
-# Check if there are any changes in the wiki submodule
-if [ -n "$(git status --porcelain)" ]; then
-    git add .
-    git commit -m "Auto-sync documentation updates from main repository"
+# Check if there are any changes or unpushed commits in the wiki submodule
+if [ -n "$(git status --porcelain)" ] || git status -sb | grep -q "ahead"; then
+    if [ -n "$(git status --porcelain)" ]; then
+        git add .
+        git commit -m "Auto-sync documentation updates from main repository"
+    fi
     git push origin HEAD
     echo "✅ Wiki repository updated and pushed."
 else
-    echo "ℹ️ No changes detected in the wiki."
+    echo "ℹ️ Wiki repository is already up to date."
 fi
 
 cd ..
@@ -33,8 +35,11 @@ echo "📌 Checking if parent repository needs to track the new submodule commit
 if [ -n "$(git status --porcelain "$WIKI_DIR")" ]; then
     git add "$WIKI_DIR"
     git commit -m "chore: update wiki submodule pointer"
+fi
+
+if git status -sb | grep -q "ahead"; then
     git push origin HEAD
-    echo "✅ Main repository submodule pointer updated and pushed."
+    echo "✅ Main repository updated and pushed."
 else
-    echo "ℹ️ Submodule pointer is already up to date in the main repository."
+    echo "ℹ️ Main repository is already up to date."
 fi
