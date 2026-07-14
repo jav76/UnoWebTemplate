@@ -23,10 +23,18 @@ public partial class MainPage : Page
             // Calculate base address dynamically based on window location in WASM, or fallback to localhost
             var baseUri = new Uri("http://localhost:8080");
 #if __WASM__
-            var location = Uno.Foundation.WebAssemblyRuntime.InvokeJS("window.location.origin");
-            if (!string.IsNullOrEmpty(location))
+            var configuredApiUrl = Uno.Foundation.WebAssemblyRuntime.InvokeJS("window.UnoAppConfig?.apiUrl || ''");
+            if (!string.IsNullOrEmpty(configuredApiUrl))
             {
-                baseUri = new Uri(location);
+                baseUri = new Uri(configuredApiUrl);
+            }
+            else
+            {
+                var location = Uno.Foundation.WebAssemblyRuntime.InvokeJS("window.location.origin");
+                if (!string.IsNullOrEmpty(location))
+                {
+                    baseUri = new Uri(location);
+                }
             }
 #endif
             var response = await _httpClient.GetStringAsync(new Uri(baseUri, "api/status"));
