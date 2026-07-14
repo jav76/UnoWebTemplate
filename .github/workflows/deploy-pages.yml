@@ -29,20 +29,12 @@ jobs:
 
       - name: Publish WASM Client
         run: |
+          REPOSITORY_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
           dotnet publish UnoWebTemplate.Client/UnoWebTemplate.Client/UnoWebTemplate.Client.csproj \
             -c Release \
             -f net10.0-browserwasm \
-            -o build-output
-
-      # Fix base href and resource paths for GitHub Pages subpath hosting (e.g. /UnoWebTemplate/)
-      - name: Fix base href for GitHub Pages subpath
-        run: |
-          REPOSITORY_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
-          # Insert the base href tag immediately after <head>
-          sed -i "s|<head>|<head><base href=\"/$REPOSITORY_NAME/\" />|g" build-output/wwwroot/index.html
-          # Strip leading slashes to convert absolute paths to base-relative paths
-          sed -i 's|src="/package_|src="package_|g' build-output/wwwroot/index.html
-          sed -i 's|href="/package_|href="package_|g' build-output/wwwroot/index.html
+            -o build-output \
+            -p:WasmShellWebAppBasePath=/$REPOSITORY_NAME/
 
       # Inject the hosted API URL into index.html before deployment
       - name: Inject API URL
