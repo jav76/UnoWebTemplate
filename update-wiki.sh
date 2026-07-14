@@ -22,7 +22,7 @@ if [ -n "$(git status --porcelain)" ] || git status -sb | grep -q "ahead"; then
         git add .
         git commit -m "Auto-sync documentation updates from main repository"
     fi
-    git push origin HEAD
+    git push origin HEAD:master
     echo "✅ Wiki repository updated and pushed."
 else
     echo "ℹ️ Wiki repository is already up to date."
@@ -38,7 +38,7 @@ if [ -n "$(git status --porcelain "$WIKI_DIR")" ]; then
 fi
 
 if git status -sb | grep -q "ahead"; then
-    git push origin HEAD
+    git push origin HEAD:main
     echo "✅ Main repository updated and pushed."
 else
     echo "ℹ️ Main repository is already up to date."
