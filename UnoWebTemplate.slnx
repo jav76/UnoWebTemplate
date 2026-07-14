@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="global.json" />
+    <File Path="Dockerfile" />
+    <File Path="docker-compose.yml" />
+    <File Path="rename-template.sh" />
+  </Folder>
+  <Project Path="UnoWebTemplate.Shared/UnoWebTemplate.Shared.csproj" />
+  <Project Path="UnoWebTemplate.Client/UnoWebTemplate.Client/UnoWebTemplate.Client.csproj" />
+  <Project Path="UnoWebTemplate.Server/UnoWebTemplate.Server.csproj" />
+</Solution>

@@ -1,0 +1,40 @@
+## Ignore Visual Studio / MSBuild / dotnet temporary and build artifacts
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.userosscache
+*.sln.docstates
+
+## Ignore IDE specific files
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.run/
+
+## Databases
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+## Tailwind CLI Standalone binaries (downloaded dynamically)
+tailwindcss
+tailwindcss.exe
+
+## Local environment secrets
+.env
+.env.*
+
+## Docker Compose files / local logs
+logs/
+*.log

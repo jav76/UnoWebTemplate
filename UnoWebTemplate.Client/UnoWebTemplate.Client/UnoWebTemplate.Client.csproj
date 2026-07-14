@@ -1,0 +1,36 @@
+<Project Sdk="Uno.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">net10.0-browserwasm;net10.0-desktop;net10.0-windows10.0.26100</TargetFrameworks>
+    <TargetFrameworks Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'false'">net10.0-browserwasm;net10.0-desktop</TargetFrameworks>
+
+    <OutputType>Exe</OutputType>
+    <UnoSingleProject>true</UnoSingleProject>
+    <RuntimeIdentifiers Condition="'$(TargetFramework)' == 'net10.0-desktop'">linux-x64</RuntimeIdentifiers>
+
+    <!-- Display name -->
+    <ApplicationTitle>UnoWebTemplate.Client</ApplicationTitle>
+    <!-- App Identifier -->
+    <ApplicationId>com.companyname.unowebtemplate-client</ApplicationId>
+    <!-- Versions -->
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+    <!-- Package Publisher -->
+    <ApplicationPublisher>UnoWebTemplate.Client</ApplicationPublisher>
+    <!-- Package Description -->
+    <Description>UnoWebTemplate.Client powered by Uno Platform.</Description>
+
+    <!--
+      UnoFeatures are used to quickly add and manage features enabled for your app.
+      https://aka.platform.uno/singleproject-features
+    -->
+    <UnoFeatures>
+      Material;
+      Toolkit;
+      SkiaRenderer;
+    </UnoFeatures>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\UnoWebTemplate.Shared\UnoWebTemplate.Shared.csproj" />
+  </ItemGroup>
+</Project>
