@@ -23,7 +23,7 @@ public class Program
         // Database Configuration
         // Default to SQLite local file, but read from env to allow Docker or external overrides
         var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING") 
-            ?? "Data Source=app.db;Journal Mode=WAL;";
+            ?? "Data Source=app.db;";
 
         builder.Services.AddDbContext<AppDbContext>(options =>
         {
