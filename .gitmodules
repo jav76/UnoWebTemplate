@@ -1,3 +1,4 @@
 [submodule "wiki"]
 	path = wiki
 	url = https://github.com/jav76/UnoWebTemplate.wiki.git
+	branch = master

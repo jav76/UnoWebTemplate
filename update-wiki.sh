@@ -7,7 +7,7 @@ WIKI_DIR="wiki"
 DOCS_DIR="docs"
 
 echo "🔄 Initializing/updating wiki submodule..."
-git submodule update --init --recursive
+git submodule update --init --recursive --remote
 
 echo "🧹 Syncing docs to wiki folder..."
 # Copy all markdown files from docs folder directly into the flat wiki folder
