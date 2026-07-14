@@ -1,4 +1,4 @@
-﻿import { config as unoConfig } from "/package_7e9ba93afb216998b691a55950a9a39b215c0a69/uno-config.js";
+﻿import { config as unoConfig } from "/UnoWebTemplate/package_7e9ba93afb216998b691a55950a9a39b215c0a69/uno-config.js";
 
 const MAX_CACHE_CONCURRENCY = 10;
 
@@ -72,7 +72,7 @@ if (unoConfig.environmentVariables["UNO_BOOTSTRAP_DEBUGGER_ENABLED"] !== "True")
     self.addEventListener('install', function (e) {
         console.debug('[ServiceWorker] Installing offline worker');
         e.waitUntil(
-            caches.open('7eb55628-fd70-4e00-812d-bc2c400164d7').then(async function (cache) {
+            caches.open('8a4507ff-1b3b-4258-9ecf-bd502569e3b6').then(async function (cache) {
                 console.debug('[ServiceWorker] Caching app binaries and content');
 
                 await cacheFilesWithConcurrency(cache, unoConfig.offline_files, MAX_CACHE_CONCURRENCY);
@@ -84,7 +84,7 @@ if (unoConfig.environmentVariables["UNO_BOOTSTRAP_DEBUGGER_ENABLED"] !== "True")
                     // Replace dynamic import with fetch and eval for web worker compatibility
                     // In .NET 10+, dotnet.boot.js was merged with dotnet.js for performance
                     // Use the fingerprinted filename from config for proper caching
-                    const response = await fetch(`/_framework/${unoConfig.dotnet_js_filename}`);
+                    const response = await fetch(`/UnoWebTemplate/_framework/${unoConfig.dotnet_js_filename}`);
                     if (!response.ok) {
                         throw new Error(`Failed to fetch ${unoConfig.dotnet_js_filename}: ${response.status} ${response.statusText}`);
                     }
@@ -131,7 +131,7 @@ if (unoConfig.environmentVariables["UNO_BOOTSTRAP_DEBUGGER_ENABLED"] !== "True")
                         monoConfigResources.wasmNative,
                         monoConfigResources.icu
                     ].flatMap(extractFilenames).map(
-                        filename => `/_framework/${filename}`
+                        filename => `/UnoWebTemplate/_framework/${filename}`
                     );
                     await cacheFilesWithConcurrency(cache, frameworkUris, MAX_CACHE_CONCURRENCY);
                 } catch (e) {
@@ -150,7 +150,7 @@ if (unoConfig.environmentVariables["UNO_BOOTSTRAP_DEBUGGER_ENABLED"] !== "True")
             caches.keys().then(function (cacheNames) {
                 return Promise.all(
                     cacheNames.filter(function (cacheName) {
-                        return cacheName !== '7eb55628-fd70-4e00-812d-bc2c400164d7';
+                        return cacheName !== '8a4507ff-1b3b-4258-9ecf-bd502569e3b6';
                     }).map(function (cacheName) {
                         console.debug('[ServiceWorker] Deleting old cache:', cacheName);
                         return caches.delete(cacheName);
