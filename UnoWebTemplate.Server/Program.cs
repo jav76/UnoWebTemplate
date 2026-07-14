@@ -87,8 +87,38 @@ public class Program
             app.UseDeveloperExceptionPage();
         }
 
-        // Host the compiled client WASM static files
-        app.UseStaticFiles();
+        // Configure custom content types to support Uno WebAssembly assets
+        var contentTypeProvider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
+        contentTypeProvider.Mappings[".dat"] = "application/octet-stream";
+        contentTypeProvider.Mappings[".odb"] = "application/octet-stream";
+        contentTypeProvider.Mappings[".pdb"] = "application/octet-stream";
+
+        StaticFileOptions? fallbackOptions = null;
+
+        if (app.Environment.IsDevelopment())
+        {
+            var clientWasmPath = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, "../UnoWebTemplate.Client/UnoWebTemplate.Client/bin/Debug/net10.0-browserwasm/wwwroot"));
+            if (Directory.Exists(clientWasmPath))
+            {
+                var wasmFileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(clientWasmPath);
+
+                app.UseStaticFiles(new StaticFileOptions
+                {
+                    FileProvider = wasmFileProvider,
+                    ContentTypeProvider = contentTypeProvider
+                });
+
+                fallbackOptions = new StaticFileOptions
+                {
+                    FileProvider = wasmFileProvider
+                };
+            }
+        }
+
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            ContentTypeProvider = contentTypeProvider
+        });
 
         // API endpoints
         var api = app.MapGroup("/api");
@@ -105,7 +135,14 @@ public class Program
         });
 
         // Fallback SPA routing to host index.html
-        app.MapFallbackToFile("index.html");
+        if (fallbackOptions != null)
+        {
+            app.MapFallbackToFile("index.html", fallbackOptions);
+        }
+        else
+        {
+            app.MapFallbackToFile("index.html");
+        }
 
         logger.LogInformation("Starting UnoWebTemplate server application...");
         app.Run();
