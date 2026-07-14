@@ -23,7 +23,7 @@
     <TailwindExeExtension Condition="$([MSBuild]::IsOSPlatform('Windows'))">.exe</TailwindExeExtension>
     <TailwindExeName>tailwindcss-$(TailwindPlatform)-$(TailwindArch)$(TailwindExeExtension)</TailwindExeName>
     <TailwindUrl>https://github.com/tailwindlabs/tailwindcss/releases/download/v$(TailwindVersion)/$(TailwindExeName)</TailwindUrl>
-    <TailwindLocalExe>$(ProjectDir)tailwindcss$(TailwindExeExtension)</TailwindLocalExe>
+    <TailwindLocalExe>$(MSBuildProjectDirectory)/tailwindcss$(TailwindExeExtension)</TailwindLocalExe>
   </PropertyGroup>
 
   <ItemGroup>
@@ -47,7 +47,7 @@
 
   <!-- Auto-download Tailwind CLI binary if missing -->
   <Target Name="DownloadTailwind" BeforeTargets="TailwindCss">
-    <DownloadFile SourceUrl="$(TailwindUrl)" DestinationFolder="$(ProjectDir)" DestinationFileName="tailwindcss$(TailwindExeExtension)" Condition="!Exists('$(TailwindLocalExe)')" />
+    <DownloadFile SourceUrl="$(TailwindUrl)" DestinationFolder="$(MSBuildProjectDirectory)" DestinationFileName="tailwindcss$(TailwindExeExtension)" Condition="!Exists('$(TailwindLocalExe)')" />
     <Exec Command="chmod +x &quot;$(TailwindLocalExe)&quot;" Condition="!$([MSBuild]::IsOSPlatform('Windows')) And Exists('$(TailwindLocalExe)')" />
   </Target>
 
