@@ -11,6 +11,7 @@ You can view a live demonstration of the WebAssembly frontend (deployed automati
 ## 🚀 Features
 
 * 📱 **Multi-targeted Frontend**: Write UI once using WinUI 3 XAML and deploy to WebAssembly, Windows (native WinAppSDK), or Linux/macOS (Skia Desktop).
+* ⚡ **Interactive Showcase**: Pre-loaded modular widgets illustrating real-time vector charts, 2.5D grab-and-drag tilt card physics, and a 60fps particle sandbox engine.
 * ⚙️ **Integrated Backend**: Serves minimal API endpoints and hosts the WebAssembly client assets dynamically using optimized static file MIME mappings.
 * 🎨 **Node-free Tailwind CSS v4**: Automagically downloads the correct platform binary and compiles Tailwind utility classes during MSBuild cycles. No `node` or `npm` required.
 * 🪵 **Structured logging (log4net)**: Logs to Stdout/Console, Visual Studio Debug output, rolling daily files, and directly to the database.
@@ -69,6 +70,7 @@ dotnet run --project MyNewAppName.Client/MyNewAppName.Client/MyNewAppName.Client
 ## 📖 In-Depth Documentation
 
 * [Architecture & Hosting Guide](docs/Architecture.md)
+* [Interactive Showcase Dashboard Guide](docs/InteractiveShowcase.md)
 * [Node-free Tailwind CSS v4 Guide](docs/Tailwind.md)
 * [Database & log4net Logging Guide](docs/Logging.md)
 * [Docker & CI/CD Deployment Guide](docs/Containerization.md)

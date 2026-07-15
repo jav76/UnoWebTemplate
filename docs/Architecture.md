@@ -10,11 +10,13 @@ UnoWebTemplate separates logic, data schemas, frontend interface, and backend AP
 A pure `.NET Class Library` containing shared Data Transfer Objects (DTOs), constants, enums, and database entities (like `LogEntry`). It is completely independent of UI or web frameworks, allowing it to be compiled for native mobile, desktop, or web applications without dependency bloat.
 
 ### 2. Client Application (`UnoWebTemplate.Client`)
-A multi-targeted **Uno Platform Single-Project** application. It contains all XAML layouts, pages, styles, and client-side viewmodels. 
+A multi-targeted **Uno Platform Single-Project** application. It contains all XAML layouts, pages, styles, client-side viewmodels, and custom showcase widgets. 
 * Target Frameworks:
   * `net10.0-browserwasm`: Generates web static assets.
   * `net10.0-desktop`: Runs Skia-based native window on Linux and macOS.
   * `net10.0-windows10.0.*`: Runs WinUI 3 native application on Windows.
+* Subdirectories:
+  * `Widgets/`: Contains standalone, modular UI controls (like the 3D Tilt Card, Connectivity Sparkline, and Physics Particle sandbox) designed to demonstrate platform capabilities. Refer to the [Interactive Showcase Guide](InteractiveShowcase.md) for more details.
 
 ### 3. API & Web Host (`UnoWebTemplate.Server`)
 An **ASP.NET Core Web API** application. It serves backend endpoints and dynamically hosts static compiled WebAssembly assets compiled from the Client project.

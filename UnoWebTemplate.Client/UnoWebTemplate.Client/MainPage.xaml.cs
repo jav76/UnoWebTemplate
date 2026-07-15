@@ -4,13 +4,12 @@ using System.Text.Json;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.AspNetCore.SignalR.Client;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using UnoWebTemplate.Shared.Serialization;
 
 namespace UnoWebTemplate.Client;
 
-public partial class MainPage : Page
+public sealed partial class MainPage : Page
 {
     private readonly HttpClient _httpClient = new();
 
@@ -21,8 +20,7 @@ public partial class MainPage : Page
 
     private Uri GetBaseUri()
     {
-        // Calculate base address dynamically based on window location in WASM, or fallback to localhost
-        var baseUri = new Uri("http://localhost:8080");
+        var baseUri = new Uri("http://localhost:5000");
 #if __WASM__
         var configuredApiUrl = Uno.Foundation.WebAssemblyRuntime.InvokeJS("window.UnoAppConfig?.apiUrl || ''");
         if (!string.IsNullOrEmpty(configuredApiUrl))
@@ -39,6 +37,76 @@ public partial class MainPage : Page
         }
 #endif
         return baseUri;
+    }
+
+    private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        double pageWidth = e.NewSize.Width;
+        if (pageWidth <= 0) return;
+
+        // Breakpoint at 760px page width
+        if (pageWidth >= 760)
+        {
+            // 1. Configure Grid Definitions for Desktop (2 Columns, 2 Rows)
+            DashboardGrid.ColumnDefinitions.Clear();
+            DashboardGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1.1, GridUnitType.Star) });
+            DashboardGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1.2, GridUnitType.Star) });
+
+            DashboardGrid.RowDefinitions.Clear();
+            DashboardGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            DashboardGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            // 2. Position ConnectivityCard (Column 0, Row 0)
+            Grid.SetRow(ConnectivityCard, 0);
+            Grid.SetColumn(ConnectivityCard, 0);
+            ConnectivityCard.Margin = new Thickness(0, 0, 16, 16);
+
+            // 3. Position TiltCard (Column 0, Row 1)
+            Grid.SetRow(TiltCard, 1);
+            Grid.SetColumn(TiltCard, 0);
+            TiltCard.Margin = new Thickness(0, 0, 16, 0);
+
+            // 4. Position ParticleCard (Column 1, Row 0, spanning 2 Rows)
+            Grid.SetRow(ParticleCard, 0);
+            Grid.SetColumn(ParticleCard, 1);
+            Grid.SetRowSpan(ParticleCard, 2);
+            ParticleCard.Height = 410;
+
+            // 5. Adjust bottom info layout
+            InfoStackPanel.Orientation = Orientation.Horizontal;
+            InfoStackPanel.Spacing = 40;
+        }
+        else
+        {
+            // 1. Configure Grid Definitions for Mobile (1 Column, 3 Rows)
+            DashboardGrid.ColumnDefinitions.Clear();
+            DashboardGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+            DashboardGrid.RowDefinitions.Clear();
+            DashboardGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            DashboardGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            DashboardGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            // 2. Position ConnectivityCard (Row 0)
+            Grid.SetRow(ConnectivityCard, 0);
+            Grid.SetColumn(ConnectivityCard, 0);
+            ConnectivityCard.Margin = new Thickness(0, 0, 0, 16);
+
+            // 3. Position TiltCard (Row 1)
+            Grid.SetRow(TiltCard, 1);
+            Grid.SetColumn(TiltCard, 0);
+            TiltCard.Margin = new Thickness(0, 0, 0, 16);
+
+            // 4. Position ParticleCard (Row 2)
+            Grid.SetRow(ParticleCard, 2);
+            Grid.SetColumn(ParticleCard, 0);
+            Grid.SetRowSpan(ParticleCard, 1);
+            ParticleCard.Height = 380;
+
+            // 5. Adjust bottom info layout
+            InfoStackPanel.Orientation = Orientation.Vertical;
+            InfoStackPanel.Spacing = 20;
+        }
     }
 
     private async void StatusButtonHttp_Click(object sender, RoutedEventArgs e)
@@ -99,3 +167,4 @@ public partial class MainPage : Page
         }
     }
 }
+
