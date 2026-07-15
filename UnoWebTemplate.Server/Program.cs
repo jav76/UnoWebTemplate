@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using DotNetEnv;
 using UnoWebTemplate.Server.Data;
+using UnoWebTemplate.Server.Hubs;
 
 namespace UnoWebTemplate.Server;
 
@@ -60,6 +61,8 @@ public class Program
                       .AllowAnyHeader();
             });
         });
+
+        builder.Services.AddSignalR();
 
         var app = builder.Build();
 
@@ -133,6 +136,8 @@ public class Program
                 Message = "Welcome to the UnoWebTemplate API"
             });
         });
+
+        app.MapHub<StatusHub>("/hubs/status");
 
         // Fallback SPA routing to host index.html
         if (fallbackOptions != null)
