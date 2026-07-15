@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-# Emscripten WASM toolchain requires Python, and Native AOT compilation requires clang & zlib
+# Emscripten WASM toolchain requires Python
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python-is-python3 \
