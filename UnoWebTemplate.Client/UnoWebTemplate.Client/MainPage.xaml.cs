@@ -73,8 +73,20 @@ public sealed partial class MainPage : Page
             ParticleCard.Height = 410;
 
             // 5. Adjust bottom info layout
-            InfoStackPanel.Orientation = Orientation.Horizontal;
-            InfoStackPanel.Spacing = 40;
+            InfoGrid.ColumnDefinitions.Clear();
+            InfoGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(420) });
+            InfoGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+            InfoGrid.RowDefinitions.Clear();
+            InfoGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            Grid.SetColumn(TechStackPanel, 0);
+            Grid.SetRow(TechStackPanel, 0);
+            TechStackPanel.Margin = new Thickness(0);
+
+            Grid.SetColumn(DiagnosticsPanel, 1);
+            Grid.SetRow(DiagnosticsPanel, 0);
+            DiagnosticsPanel.Margin = new Thickness(40, 0, 0, 0);
         }
         else
         {
@@ -104,8 +116,20 @@ public sealed partial class MainPage : Page
             ParticleCard.Height = 380;
 
             // 5. Adjust bottom info layout
-            InfoStackPanel.Orientation = Orientation.Vertical;
-            InfoStackPanel.Spacing = 20;
+            InfoGrid.ColumnDefinitions.Clear();
+            InfoGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+            InfoGrid.RowDefinitions.Clear();
+            InfoGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            InfoGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            Grid.SetColumn(TechStackPanel, 0);
+            Grid.SetRow(TechStackPanel, 0);
+            TechStackPanel.Margin = new Thickness(0);
+
+            Grid.SetColumn(DiagnosticsPanel, 0);
+            Grid.SetRow(DiagnosticsPanel, 1);
+            DiagnosticsPanel.Margin = new Thickness(0, 20, 0, 0);
         }
     }
 

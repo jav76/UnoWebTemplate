@@ -51,18 +51,24 @@
                     BorderBrush="#1AFFFFFF"
                     BorderThickness="1"
                     CornerRadius="8"
+                    ManipulationMode="None"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch">
                 
-                <Grid Background="Transparent"
+                <Grid x:Name="GestureGrid"
+                      Background="Transparent"
                       CornerRadius="8"
+                      ManipulationMode="None"
                       PointerPressed="Canvas_PointerPressed"
+                      PointerReleased="Canvas_PointerReleased"
+                      PointerCaptureLost="Canvas_PointerCaptureLost"
                       PointerMoved="Canvas_PointerMoved"
                       PointerEntered="Canvas_PointerEntered"
                       PointerExited="Canvas_PointerExited">
                     
                     <Canvas x:Name="ParticleCanvas"
                             Background="Transparent"
+                            ManipulationMode="None"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch" />
                 </Grid>

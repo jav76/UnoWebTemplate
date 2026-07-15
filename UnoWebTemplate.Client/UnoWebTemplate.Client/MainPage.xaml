@@ -52,10 +52,11 @@
                                    FontWeight="Bold" />
 
                         <!-- Content Stack -->
-                        <StackPanel x:Name="InfoStackPanel" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <!-- Content Stack -->
+                        <Grid x:Name="InfoGrid" Grid.Row="1" HorizontalAlignment="Stretch">
                             
                             <!-- Tech Stack Info Panel -->
-                            <StackPanel Spacing="12" Width="420" HorizontalAlignment="Left">
+                            <StackPanel x:Name="TechStackPanel" Spacing="12" Width="420" HorizontalAlignment="Left">
                                 <TextBlock Text="Core Technology Stack"
                                            Foreground="#8B5CF6"
                                            FontSize="14"
@@ -77,7 +78,7 @@
                             </StackPanel>
 
                             <!-- Verification Diagnostics Panel -->
-                            <StackPanel Spacing="12" HorizontalAlignment="Stretch">
+                            <StackPanel x:Name="DiagnosticsPanel" Spacing="12" HorizontalAlignment="Stretch">
                                 <TextBlock Text="Diagnostics &amp; Status Validation"
                                            Foreground="#10B981"
                                            FontSize="14"
@@ -86,7 +87,8 @@
                                 <TextBlock Text="Verify client-to-server static API routing and SignalR persistent connection states using these verification links:"
                                            Foreground="#94A3B8"
                                            FontSize="13"
-                                           TextWrapping="Wrap" />
+                                           TextWrapping="Wrap"
+                                           Padding="2, 2, 2, 2" />
 
                                 <!-- Diagnostics Buttons Stack -->
                                 <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,5,0,0">
@@ -113,7 +115,7 @@
                                            Margin="0,5,0,0"
                                            TextWrapping="Wrap" />
                             </StackPanel>
-                        </StackPanel>
+                        </Grid>
                     </Grid>
                 </Border>
             </Grid>

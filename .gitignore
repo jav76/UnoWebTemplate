@@ -38,3 +38,5 @@ tailwindcss.exe
 ## Docker Compose files / local logs
 logs/
 *.log
+
+publish/

@@ -20,6 +20,7 @@
               BorderBrush="#808B5CF6"
               BorderThickness="1.5"
               CornerRadius="16"
+              ManipulationMode="None"
               PointerMoved="CardRoot_PointerMoved"
               PointerEntered="CardRoot_PointerEntered"
               PointerExited="CardRoot_PointerExited"

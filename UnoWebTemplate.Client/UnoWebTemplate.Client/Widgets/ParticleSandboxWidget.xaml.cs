@@ -239,7 +239,11 @@ namespace UnoWebTemplate.Client.Widgets
 
         private void Canvas_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
+            _isMouseOver = true;
             var pos = e.GetCurrentPoint(ParticleCanvas).Position;
+            _mousePosition = pos;
+
+            GestureGrid.CapturePointer(e.Pointer);
 
             // Click Burst: Spawn 28 tiny fast explosion particles decaying over ~40-70 frames
             int explosionCount = 28;
@@ -256,6 +260,17 @@ namespace UnoWebTemplate.Client.Widgets
             }
 
             UpdateParticleCountText();
+        }
+
+        private void Canvas_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            _isMouseOver = false;
+            GestureGrid.ReleasePointerCapture(e.Pointer);
+        }
+
+        private void Canvas_PointerCaptureLost(object sender, PointerRoutedEventArgs e)
+        {
+            _isMouseOver = false;
         }
     }
 }

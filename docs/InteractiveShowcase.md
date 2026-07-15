@@ -56,6 +56,16 @@ To prevent this layout lock:
 
 ---
 
+## 📱 Mobile Touch & Scroll Containment
+
+On mobile browsers, standard pointer interactions (like dragging to tilt a card or gravity-guiding particles) can trigger the browser's default viewport panning (scrolling). This makes interacting with the widgets difficult as the parent page scrolls under your finger.
+
+To resolve this issue:
+* **`ManipulationMode="None"`**: Added this property to both the `CardRoot` Grid in [TiltCardWidget.xaml](file:///home/jaret/Documents/GitHub/UnoWebTemplate/UnoWebTemplate.Client/UnoWebTemplate.Client/Widgets/TiltCardWidget.xaml) and the interactive gesture Grid in [ParticleSandboxWidget.xaml](file:///home/jaret/Documents/GitHub/UnoWebTemplate/UnoWebTemplate.Client/UnoWebTemplate.Client/Widgets/ParticleSandboxWidget.xaml).
+* **CSS Mapping**: On WebAssembly targets, Uno compiles `ManipulationMode="None"` directly into the `touch-action: none` CSS style for the underlying HTML element. This tells the browser to withhold native touch scroll behavior over these elements, ensuring that dragging on the card or canvas stays contained and responsive.
+
+---
+
 ## 🧹 Removing the Showcase (Modularity)
 
 If you are using this boilerplate as a production template and wish to delete the showcase demo:
