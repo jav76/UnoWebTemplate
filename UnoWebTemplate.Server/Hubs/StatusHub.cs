@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using UnoWebTemplate.Shared.Models;
 
 namespace UnoWebTemplate.Server.Hubs
 {
@@ -14,10 +15,10 @@ namespace UnoWebTemplate.Server.Hubs
             _logger = logger;
         }
 
-        public async Task<object> GetStatus()
+        public async Task<StatusResponse> GetStatus()
         {
             _logger.LogInformation("SignalR Status endpoint queried.");
-            return new
+            return new StatusResponse
             {
                 Status = "Healthy",
                 Timestamp = DateTimeOffset.UtcNow,

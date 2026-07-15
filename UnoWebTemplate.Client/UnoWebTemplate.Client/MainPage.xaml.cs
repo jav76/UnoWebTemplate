@@ -5,6 +5,8 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using UnoWebTemplate.Shared.Serialization;
 
 namespace UnoWebTemplate.Client;
 
@@ -71,6 +73,10 @@ public partial class MainPage : Page
             await using var connection = new HubConnectionBuilder()
                 .WithUrl(hubUri)
                 .WithAutomaticReconnect()
+                .AddJsonProtocol(options =>
+                {
+                    options.PayloadSerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
+                })
                 .Build();
 
             await connection.StartAsync();

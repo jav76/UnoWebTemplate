@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using DotNetEnv;
 using UnoWebTemplate.Server.Data;
 using UnoWebTemplate.Server.Hubs;
+using UnoWebTemplate.Shared.Models;
+using UnoWebTemplate.Shared.Serialization;
 
 namespace UnoWebTemplate.Server;
 
@@ -63,7 +65,16 @@ public class Program
             });
         });
 
-        builder.Services.AddSignalR();
+        builder.Services.ConfigureHttpJsonOptions(options =>
+        {
+            options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
+        });
+
+        builder.Services.AddSignalR()
+            .AddJsonProtocol(options =>
+            {
+                options.PayloadSerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
+            });
 
         var app = builder.Build();
 
@@ -130,7 +141,7 @@ public class Program
         api.MapGet("/status", () =>
         {
             logger.LogInformation("API Status endpoint queried.");
-            return Results.Ok(new
+            return Results.Ok(new StatusResponse
             {
                 Status = "Healthy",
                 Timestamp = DateTimeOffset.UtcNow,
