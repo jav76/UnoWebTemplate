@@ -1,7 +1,7 @@
 let config = {};
 config.uno_remote_managedpath = "_framework";
 config.uno_app_base = "/UnoWebTemplate/package_7e9ba93afb216998b691a55950a9a39b215c0a69";
-config.dotnet_js_filename = "dotnet.hihett4phy.js";
+config.dotnet_js_filename = "dotnet.5y0ps3khsi.js";
 config.uno_dependencies = ["/UnoWebTemplate/package_7e9ba93afb216998b691a55950a9a39b215c0a69/Uno.Runtime.Wasm.js", "/UnoWebTemplate/package_7e9ba93afb216998b691a55950a9a39b215c0a69/setImmediate.js", "/UnoWebTemplate/package_7e9ba93afb216998b691a55950a9a39b215c0a69/Uno.Wasm.js"];
 config.uno_runtime_options = [];
 config.enable_pwa = false;
