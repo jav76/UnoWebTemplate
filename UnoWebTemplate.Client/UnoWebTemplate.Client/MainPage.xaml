@@ -19,14 +19,25 @@
                        FontSize="16" 
                        HorizontalAlignment="Center" />
 
-            <!-- Quick Status Button -->
-            <Button Content="Check Backend Status" 
-                    Background="#3B82F6" 
-                    Foreground="White" 
-                    Padding="20,10"
-                    CornerRadius="6"
-                    Click="StatusButton_Click" 
-                    HorizontalAlignment="Center" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+                <!-- HTTP Quick Status Button -->
+                <Button Content="Check Backend Status (HTTP)"
+                        Background="#3B82F6"
+                        Foreground="White"
+                        Padding="20,10"
+                        CornerRadius="6"
+                        Click="StatusButtonHttp_Click"
+                        HorizontalAlignment="Center" />
+
+                <!-- SignalR Quick Status Button -->
+                <Button Content="Check Backend Status (SignalR)"
+                        Background="#8B5CF6"
+                        Foreground="White"
+                        Padding="20,10"
+                        CornerRadius="6"
+                        Click="StatusButtonSignalR_Click"
+                        HorizontalAlignment="Center" />
+            </StackPanel>
 
             <!-- Status Output -->
             <TextBlock x:Name="StatusText" 
