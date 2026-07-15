@@ -2,6 +2,10 @@
 
 UnoWebTemplate is a clean, multi-targeted boilerplate template designed to build modern cross-platform web and desktop applications. It integrates an **Uno Platform (WASM, Windows, Skia Desktop)** frontend, an **ASP.NET Core Web API** backend server, a Node-free **Tailwind CSS v4** build chain, **EF Core (SQLite)**, and production-ready **Docker / GitHub Actions** CI/CD container publishing.
 
+## 🌐 Live Demo
+You can view a live demonstration of the WebAssembly frontend (deployed automatically via GitHub Pages) here:
+**[UnoWebTemplate Live Demo](https://jav76.github.io/UnoWebTemplate/)**
+
 ---
 
 ## 🚀 Features
