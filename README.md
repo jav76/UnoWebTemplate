@@ -74,3 +74,9 @@ dotnet run --project MyNewAppName.Client/MyNewAppName.Client/MyNewAppName.Client
 * [Node-free Tailwind CSS v4 Guide](docs/Tailwind.md)
 * [Database & log4net Logging Guide](docs/Logging.md)
 * [Docker & CI/CD Deployment Guide](docs/Containerization.md)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
