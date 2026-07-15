@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <script type="text/javascript" src="./require.js"></script>
+    <script type="module" src="./uno-bootstrap.js"></script>
+    $(ADDITIONAL_CSS)
+    $(ADDITIONAL_HEAD)
+
+    <style>
+        /* Custom loader styling to match Tailwind theme in app.css */
+        body {
+            background-color: #0f172a; /* color-brand-dark / slate-900 */
+            color: #f1f5f9; /* slate-100 */
+            font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #custom-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+            z-index: 9999;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #0f172a;
+        }
+
+        .loader-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #3b82f6; /* color-brand-primary */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 24px;
+        }
+
+        .loader-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .loader-subtitle {
+            font-size: 14px;
+            color: #94a3b8; /* slate-400 */
+            margin-bottom: 24px;
+        }
+
+        .loader-progress-container {
+            width: 250px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .loader-progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #3b82f6; /* color-brand-primary */
+            transition: width 0.3s ease-out;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* The uno-body is initially hidden and fading in once ready */
+        #uno-body {
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* This hides the default uno-loader entirely in favor of our custom one */
+        .uno-loader {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Our custom loading screen -->
+    <div id="custom-loader">
+        <div class="loader-spinner"></div>
+        <div class="loader-title">UnoWebTemplate</div>
+        <div class="loader-subtitle">Loading Application...</div>
+        <div class="loader-progress-container">
+            <div id="custom-progress-bar" class="loader-progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- The container Uno expects to load into -->
+    <div id="uno-body" class="container-fluid uno-body">
+        <div class="uno-loader"
+             loading-position="bottom"
+             loading-alert="none">
+            <img class="logo" src="" title="Uno is loading your application" />
+            <progress></progress>
+            <span class="alert"></span>
+        </div>
+    </div>
+    <noscript>
+        <p>This application requires Javascript and WebAssembly to be enabled.</p>
+    </noscript>
+
+    <script>
+        // Track the progress using MutationObserver on the built-in uno-loader progress element
+        document.addEventListener("DOMContentLoaded", function() {
+            var defaultLoader = document.querySelector(".uno-loader");
+            var defaultProgress = document.querySelector(".uno-loader progress");
+            var customLoader = document.getElementById("custom-loader");
+            var customProgressBar = document.getElementById("custom-progress-bar");
+            var unoBody = document.getElementById("uno-body");
+            var loadComplete = false;
+
+            // Wait a short bit to ensure the uno-loader logic initializes
+            setTimeout(function() {
+                // Some versions of Uno Platform remove the .uno-loader when it finishes
+                // We'll set up an observer to watch for the default loader's removal or progress changes
+                var observer = new MutationObserver(function(mutations) {
+                    if (loadComplete) return;
+
+                    // Check if default loader was removed from the DOM
+                    if (!document.body.contains(defaultLoader)) {
+                        finishLoading();
+                        return;
+                    }
+
+                    // Alternatively, sync the progress bar if it's there
+                    if (defaultProgress && defaultProgress.max) {
+                        var val = defaultProgress.value || 0;
+                        var max = defaultProgress.max || 100;
+                        var percentage = (val / max) * 100;
+                        customProgressBar.style.width = percentage + "%";
+
+                        if (percentage >= 100) {
+                            finishLoading();
+                        }
+                    }
+                });
+
+                if (defaultLoader && document.body.contains(defaultLoader)) {
+                    observer.observe(document.body, { childList: true, subtree: true });
+                    if (defaultProgress) {
+                        observer.observe(defaultProgress, { attributes: true, attributeFilter: ['value', 'max'] });
+                    }
+                } else {
+                    // Loader already removed
+                    finishLoading();
+                }
+
+                // Fallback timeout in case the observer misses it
+                var checkInterval = setInterval(function() {
+                    if (loadComplete) {
+                        clearInterval(checkInterval);
+                        return;
+                    }
+                    if (!document.body.contains(defaultLoader) || (defaultProgress && defaultProgress.value >= defaultProgress.max)) {
+                        finishLoading();
+                        clearInterval(checkInterval);
+                    }
+                }, 500);
+
+            }, 100);
+
+            function finishLoading() {
+                if (loadComplete) return;
+                loadComplete = true;
+                customProgressBar.style.width = "100%";
+
+                setTimeout(function() {
+                    // Hide the custom loader
+                    customLoader.style.opacity = "0";
+                    customLoader.style.visibility = "hidden";
+
+                    // Show the main app body
+                    unoBody.style.opacity = "1";
+
+                    // Remove custom loader from DOM after transition
+                    setTimeout(function() {
+                        if (customLoader.parentNode) {
+                            customLoader.parentNode.removeChild(customLoader);
+                        }
+                    }, 500);
+                }, 300);
+            }
+        });
+    </script>
+</body>
+</html>
