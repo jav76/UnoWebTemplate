@@ -56,7 +56,8 @@ public class Program
         {
             options.AddDefaultPolicy(policy =>
             {
-                policy.AllowAnyOrigin()
+                policy.SetIsOriginAllowed(origin => true)
+                      .AllowCredentials()
                       .AllowAnyMethod()
                       .AllowAnyHeader();
             });
