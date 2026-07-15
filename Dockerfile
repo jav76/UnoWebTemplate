@@ -2,10 +2,12 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-# Emscripten WASM toolchain requires Python
+# Emscripten WASM toolchain requires Python, and Native AOT compilation requires clang & zlib
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python-is-python3 \
+    clang \
+    zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install WASM workloads for Uno Platform WebAssembly builds
@@ -55,4 +57,4 @@ COPY --from=build /app/server-publish .
 EXPOSE 8080
 ENV ASPNETCORE_HTTP_PORTS=8080
 
-ENTRYPOINT ["dotnet", "UnoWebTemplate.Server.dll"]
+ENTRYPOINT ["./UnoWebTemplate.Server"]
